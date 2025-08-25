@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<title>سويتش كرافت — إشعال الانتقال إلى المهمة لاضطراب فرط الحركة وتشتت الانتباه</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="تهيئة جسدية هادئة، تنفّس، إرخاء النظر، تتبّع بصري؛ خطوة صغيرة؛ مكافأة مؤكدة؛ وتأمل رحيم. يعمل محليًا على جهازك." />
+<style>
+  :root{
+    --bg:#0f1115; --card:#161922; --muted:#8b92a7; --text:#e9edf7; --accent:#7cc4ff; --accent2:#9ef0c3;
+    --shadow:0 10px 30px rgba(0,0,0,.35); --radius:16px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Naskh Arabic","Amiri","Tahoma"; color:var(--text);
+       background:radial-gradient(1200px 800px at 20% -10%, #1a1f2b 0, #0f1115 55%) fixed;}
+  .wrap{max-width:980px; margin:24px auto 80px; padding:0 16px}
+  header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px}
+  h1{margin:0; font-size:28px}
+  .tagline{color:var(--muted); font-size:14px}
+  .card{background:linear-gradient(180deg,#171b25,#131722); border:1px solid #232835; border-radius:16px; box-shadow:var(--shadow); padding:20px; margin-top:16px}
+  .stepper{display:flex; gap:8px; flex-wrap:wrap}
+  .chip{padding:8px 12px; border-radius:999px; border:1px solid #2a3040; color:var(--muted)}
+  .chip.active{border-color:var(--accent); color:var(--text); background:linear-gradient(180deg,#162436,#121826)}
+  .grid{display:grid; gap:16px}
+  @media(min-width:860px){ .grid.two{grid-template-columns:1.2fr .8fr} }
+  label{display:block; color:var(--muted); font-size:13px; margin-bottom:6px}
+  input[type=text],select,textarea{width:100%; background:#0f131c; border:1px solid #253046; color:var(--text); border-radius:12px; padding:12px 14px}
+  input[type=checkbox]{transform:scale(1.15); margin-left:6px}
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .btn{appearance:none; border:none; background:linear-gradient(180deg,#1b2a3d,#132033); color:#e9f6ff; padding:12px 16px; border-radius:12px; cursor:pointer; font-weight:600; border:1px solid #24324a; transition:transform .06s ease, filter .2s}
+  .btn:hover{filter:brightness(1.05)} .btn:active{transform:translateY(1px)}
+  .btn.primary{background:linear-gradient(180deg,#1f3b5a,#16314b); border-color:#2a4f77; box-shadow:0 6px 18px rgba(66,133,244,.18)}
+  .btn.ghost{background:#0f131c; border-color:#223146; color:#cfe8ff}
+  .btn.ok{background:linear-gradient(180deg,#1b3b2f,#142b23); border-color:#2e5a47; color:#dcffe4}
+  .btn.warn{background:linear-gradient(180deg,#3b2a1b,#2b1f16); border-color:#5a4131; color:#ffe6c0}
+  .btn.danger{background:linear-gradient(180deg,#3b1b22,#2b151a); border-color:#5a2e39; color:#ffd6dc}
+  .pill{padding:8px 12px; border-radius:999px; background:#0f131c; border:1px solid #263149; color:#cfe1ff; font-size:13px}
+  .muted{color:var(--muted)} .tiny{font-size:12px}
+  .hr{height:1px; background:linear-gradient(90deg,transparent,#242a3a,transparent); margin:14px 0}
+  progress{width:100%; height:12px; border:0; background:#0f131c; border-radius:999px; overflow:hidden}
+  progress::-webkit-progress-value{background:linear-gradient(90deg,#7cc4ff,#9ef0c3)}
+  .timer{font-variant-numeric:tabular-nums; font-size:40px; letter-spacing:1px; text-align:center; margin:6px 0 4px}
+  .list{display:flex; flex-direction:column; gap:10px}
+  .rowx{display:flex; justify-content:space-between; gap:10px; padding:10px; background:#0f131c; border:1px solid #222a3a; border-radius:12px}
+  .badge{padding:4px 8px; border-radius:999px; font-size:12px; border:1px solid #2a3040; color:#b6c2e1}
+  .inventory{display:flex; gap:10px; flex-wrap:wrap} .inv{background:#0f131c; border:1px solid #243046; border-radius:10px; padding:8px 10px; font-size:13px}
+  .hidden{display:none !important}
+
+  /* Wheel */
+  .wheel-wrap{display:flex; flex-direction:column; align-items:center; gap:10px}
+  .wheel{width:260px; height:260px; border-radius:50%; border:8px solid #0f131c; position:relative; overflow:hidden;
+         box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 0 0 1px #2a3040; background:conic-gradient(#18243a 0 45deg,#1a2b3f 45deg 90deg,#18243a 90deg 135deg,#1a2b3f 135deg 180deg,#18243a 180deg 225deg,#1a2b3f 225deg 270deg,#18243a 270deg 315deg,#1a2b3f 315deg 360deg);
+         transition:transform 3.2s cubic-bezier(.17,.67,.19,1.02)}
+  .wheel .label{position:absolute; left:50%; top:50%; transform-origin:0 0; color:#cfe8ff; font-size:12px}
+  .pointer{width:0; height:0; border-right:10px solid transparent; border-left:10px solid transparent; border-bottom:14px solid var(--accent); margin-top:6px}
+  .spinning{opacity:.8; pointer-events:none}
+
+  /* Ignite sub-screens */
+  .ignite-tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
+  .ignite-tab{padding:6px 10px; border-radius:999px; border:1px solid #2a3040; color:#b6c2e1; cursor:pointer}
+  .ignite-tab.active{border-color:#7cc4ff; color:#eaf5ff; background:linear-gradient(180deg,#132035,#0f1828)}
+  .ignite-view{min-height:240px; position:relative; overflow:hidden}
+
+  /* Breath circle — smoother visual feedback */
+  .breath-circle{
+    width:160px; height:160px; border-radius:50%; margin:0 auto;
+    background:radial-gradient(circle at 50% 50%, #1e3a5a, #0f1825);
+    border:1px solid #2a3b55;
+    box-shadow:inset 0 0 40px rgba(124,196,255,.15), 0 0 0 rgba(124,196,255,0);
+    will-change: transform, box-shadow;
+  }
+  .breath-circle.breathe-glow{
+    box-shadow: inset 0 0 40px rgba(124,196,255,.15), 0 8px 24px rgba(124,196,255,.18);
+  }
+  .breath-text{text-align:center; font-size:18px; margin-top:8px}
+
+  /* Soft-eyes vignette */
+  .vignette:before{content:""; position:absolute; inset:-20px; pointer-events:none;
+                   background:radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 45%, rgba(0,0,0,.35) 85%)}
+
+  /* Eye movement */
+  .track{position:relative; height:220px; border:1px dashed #28334a; border-radius:12px; background:#0f131c}
+  .dot{position:absolute; width:16px; height:16px; border-radius:50%; background:#a8d6ff; box-shadow:0 0 8px rgba(124,196,255,.6)}
+
+  /* Toast */
+  .toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+    background:#101826; border:1px solid #263149; color:#d9e7ff; padding:10px 14px; border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35); opacity:0; pointer-events:none; transition:opacity .2s, transform .2s;
+    z-index:9999;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+  .toast.ok{border-color:#2e5a47}
+  .toast.warn{border-color:#5a4131}
+  .toast.info{border-color:#2a4f77}
+
+  /* Credit line */
+  .credit{
+    margin: 18px 0 6px;
+    text-align:center;
+    font-size:12px;
+    color: var(--muted);
+  }
+  .credit a{ color:#a8d6ff; text-decoration:none; border-bottom:1px dotted #2a3040 }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>سويتش كرافت</h1>
+      <div class="tagline">أداة لطيفة لإشعال الانتقال إلى المهمة • خصوصيتك محفوظة على جهازك</div>
+    </div>
+    <div class="row">
+      <label class="row tiny" style="gap:6px"><input id="soundToggle" type="checkbox" checked> صوت</label>
+      <button class="btn ghost tiny" id="testSound" title="جرّب الجرس">تجربة الصوت</button>
+      <label class="row tiny" style="gap:6px"><input id="gentleToggle" type="checkbox"> وضع لطيف</label>
+    </div>
+  </header>
+
+  <div class="stepper">
+    <div class="chip active" data-step-chip="1">١ · التخطيط</div>
+    <div class="chip" data-step-chip="2">٢ · التهيئة</div>
+    <div class="chip" data-step-chip="3">٣ · خطوة صغيرة</div>
+    <div class="chip" data-step-chip="4">٤ · فترة التركيز</div>
+    <div class="chip" data-step-chip="5">٥ · المكافأة والتأمل</div>
+    <div class="chip" data-step-chip="6">٦ · الإحصائيات والمتابعة</div>
+  </div>
+
+  <!-- STEP 1: PLAN -->
+  <section class="card" data-step="1">
+    <div class="grid two">
+      <div>
+        <label for="task">ما المهمة التالية؟</label>
+        <input id="task" type="text" placeholder="مثلاً: أكتب فقرتين من التقرير" />
+        <label for="value" style="margin-top:10px">لماذا تهم؟ (قيمة شخصية)</label>
+        <div class="row">
+          <select id="value">
+            <option>المعنى والاتجاه</option><option>العائلة</option><option>الصحة</option>
+            <option>التعلّم</option><option>العمل والأثر</option><option>الإبداع</option><option>الإيمان/المعنى</option>
+          </select>
+          <input id="customValue" type="text" placeholder="أو اكتب قيمة خاصة بك…" />
+        </div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn primary" id="beginIgnition">ابدأ التهيئة</button>
+          <button class="btn ghost" id="skipIgnition">تخطَّ إلى الخطوة الصغيرة</button>
+        </div>
+        <div class="hr"></div>
+        <div class="tiny muted">سنقترح <b>خطوة صغيرة</b> تبدأ بها خلال دقيقة أو دقيقتين.</div>
+      </div>
+      <div>
+        <div class="inventory">
+          <div class="inv">🎟️ الجوكر: <span id="invJokers">0</span></div>
+          <div class="inv">⭐ الملصقات: <span id="invStickers">0</span></div>
+          <div class="inv">🪙 العملات: <span id="invCoins">0</span></div>
+        </div>
+        <div class="hr"></div>
+        <div class="list tiny">
+          <div class="rowx"><div>زمن التهيئة (متوسط)</div><div id="avgLatency">—</div></div>
+          <div class="rowx"><div>دقائق التركيز (٧ أيام)</div><div id="focus7">—</div></div>
+          <div class="rowx"><div>مرّات الإلغاء اليوم</div><div id="abandonsToday">0</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: IGNITE -->
+  <section class="card hidden" data-step="2">
+    <div class="row" style="justify-content:space-between">
+      <div class="pill">تهيئة جسدية هادئة · ٣ أجزاء</div>
+      <div class="tiny muted">اجلس أو قف كما ترتاح. اللطيف يكفي.</div>
+    </div>
+
+    <div class="ignite-tabs">
+      <div class="ignite-tab active" data-ig-tab="breath">١) التنفّس</div>
+      <div class="ignite-tab" data-ig-tab="soft">٢) إرخاء النظر</div>
+      <div class="ignite-tab" data-ig-tab="eye">٣) حركة العين</div>
+    </div>
+
+    <!-- Breath -->
+    <div class="ignite-view" data-ig="breath">
+      <div class="breath-circle" id="breathCircle"></div>
+      <div class="breath-text" id="breathText">عند البدء: شهيق… شهيق قصير مكمل… زفير طويل. (مرّتان)</div>
+      <div class="timer" id="breathTimer">00:00</div>
+      <progress id="breathProg" max="100" value="0"></progress>
+      <div class="row" style="margin-top:10px">
+        <button class="btn primary" id="startBreath">ابدأ</button>
+        <button class="btn ghost" id="nextSoft1">التالي: إرخاء النظر</button>
+      </div>
+      <div class="tiny muted" style="margin-top:8px">التنفّس الفسيولوجي: شهيق ~٣ ثوانٍ → شهيق قصير ~٠٫٧ → زفير طويل ~٥–٦ ثوانٍ.</div>
+    </div>
+
+    <!-- Soft eyes -->
+    <div class="ignite-view hidden vignette" data-ig="soft">
+      <div class="breath-text" style="margin-top:10px">ارخِ النظرة. لاحظ أطراف مجال رؤيتك. أرخِ الفك والكتفين.</div>
+      <div class="timer" id="softTimer">00:00</div>
+      <progress id="softProg" max="100" value="0"></progress>
+      <div class="row" style="margin-top:10px">
+        <button class="btn primary" id="startSoft">ابدأ</button>
+        <button class="btn ghost" id="nextEye1">التالي: حركة العين</button>
+      </div>
+      <div class="tiny muted" style="margin-top:8px">نوسّع المجال البصري لتهدئة المنظومة المتيقظة.</div>
+    </div>
+
+    <!-- Eye movement -->
+    <div class="ignite-view hidden" data-ig="eye">
+      <div class="row tiny"><span class="pill">تتبّع سلس</span>
+        <label class="row tiny"><input type="radio" name="emMode" value="pursuit" checked> تتبّع</label>
+        <label class="row tiny"><input type="radio" name="emMode" value="saccade"> حركات سريعة</label>
+        <label class="row tiny">السرعة <input id="emSpeed" type="range" min="1" max="10" value="6"></label>
+      </div>
+      <div class="track" id="emTrack"><div class="dot" id="emDot" style="right:10px; top:100px"></div></div>
+      <div class="timer" id="eyeTimer">00:00</div>
+      <progress id="eyeProg" max="100" value="0"></progress>
+      <div class="row" style="margin-top:10px">
+        <button class="btn primary" id="startEye">ابدأ</button>
+        <button class="btn ok" id="toTiny">إلى الخطوة الصغيرة</button>
+      </div>
+      <div class="tiny muted" style="margin-top:8px">اتبع النقطة براحة. لا حاجة للدقة.</div>
+    </div>
+  </section>
+
+  <!-- STEP 3: TINY START -->
+  <section class="card hidden" data-step="3">
+    <div class="pill">الخطوة ٣ · خطوة صغيرة</div>
+    <h3 style="margin:10px 0 6px">جرّب هذه الخطوة البسيطة (في دقيقة أو دقيقتين):</h3>
+    <div id="tinySuggestion" class="card" style="background:#101520; border-color:#20273a"></div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn ghost" id="anotherTiny">اقتراح آخر</button>
+      <button class="btn ok" id="didTiny">أنجزت الخطوة ✔</button>
+    </div>
+    <div class="hr"></div>
+    <div class="row">
+      <div class="pill">اختر فترة التركيز:</div>
+      <button class="btn" data-mins="5">٥ دقائق</button>
+      <button class="btn" data-mins="8">٨ دقائق</button>
+      <button class="btn" data-mins="12">١٢ دقيقة</button>
+      <button class="btn ghost" id="useJoker" title="ترقية الدوران القادم" disabled>استخدم الجوكر 🎟️</button>
+    </div>
+  </section>
+
+  <!-- STEP 4: FOCUS BLOCK -->
+  <section class="card hidden" data-step="4">
+    <div class="row" style="justify-content:space-between">
+      <div class="pill">فترة التركيز</div>
+      <div class="tiny muted">فك مسترخي • كتفان هادئتان • رمش بلطف</div>
+    </div>
+    <div class="timer" id="focusTimer">00:00</div>
+    <progress id="focusProgress" max="100" value="0"></progress>
+    <div class="row" style="margin-top:10px">
+      <button class="btn ok" id="finishEarly">أنهِ الآن</button>
+      <button class="btn warn" id="pauseFocus">إيقاف مؤقّت</button>
+      <button class="btn danger" id="abortFocus">إلغاء المحاولة</button>
+    </div>
+  </section>
+
+  <!-- STEP 5: REWARD & REFLECT -->
+  <section class="card hidden" data-step="5">
+    <div class="grid two">
+      <div>
+        <div class="pill">دوّر العجلة (مكافأة مضمونة)</div>
+        <div class="wheel-wrap" style="margin-top:10px">
+          <div class="pointer" aria-hidden="true"></div>
+          <div class="wheel" id="wheel" aria-label="عجلة المكافأة"></div>
+          <div id="wheelResult" class="tiny muted">جاهز للدوران</div>
+          <div class="row">
+            <button class="btn primary" id="spinWheel">دوّر</button>
+            <button class="btn ghost" id="skipWheel">تجاوز</button>
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <div class="inventory tiny">
+            <div class="inv">🎟️ الجوكر: <span id="invJokers2">0</span></div>
+            <div class="inv">⭐ الملصقات: <span id="invStickers2">0</span></div>
+            <div class="inv">🪙 العملات: <span id="invCoins2">0</span></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="pill">تأمل سريع (٢٠–٣٠ ثانية)</div>
+        <div class="list" style="margin-top:10px">
+          <div><span class="tiny muted">زمن التهيئة</span> · <span class="badge" id="latencyOut">—</span></div>
+          <div>
+            <label for="effort">الجهد اليوم</label>
+            <input id="effort" type="range" min="1" max="5" value="3" />
+            <div class="tiny muted">١ = جهد بسيط · ٥ = بأقصى طاقة مناسبة</div>
+          </div>
+          <div>
+            <label for="mood">المزاج الآن</label>
+            <input id="mood" type="range" min="1" max="5" value="3" />
+            <div class="tiny muted">١ = منخفض · ٥ = مرتفع</div>
+          </div>
+          <div class="row"><input id="stuck" type="checkbox"><label for="stuck">تعلّقت/تشتّتُّ</label></div>
+          <div class="row">
+            <button class="btn ok" id="saveSession">احفظ الجلسة</button>
+            <button class="btn ghost" id="anotherBlock">ابدأ فترة أخرى</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 6: STATS -->
+  <section class="card hidden" data-step="6">
+    <div class="row" style="justify-content:space-between">
+      <div class="pill">الجلسات الأخيرة</div>
+      <div class="row">
+        <button class="btn ghost" id="exportData">تصدير JSON</button>
+        <button class="btn ghost" id="clearData">حذف الكل (محليًا)</button>
+      </div>
+    </div>
+    <div id="sessionList" class="list" style="margin-top:12px"></div>
+    <div class="hr"></div>
+    <div class="row"><button class="btn primary" id="newSession">بدء جلسة جديدة</button></div>
+    <div class="tiny muted">البيانات تبقى على جهازك فقط.</div>
+  </section>
+
+  <div class="tiny muted" style="margin-top:16px">
+    تنبيه: إذا كان لديك أي مشكلة في التنفّس أو العينين فتجنّب هذه التمارين. يمكنك كتم الصوت في أي وقت. لا تُرسل أي بيانات خارج جهازك.
+  </div>
+
+  <!-- CREDIT LINE (kept in English as requested) -->
+  <footer class="credit">
+    Designed and Created by <a href="https://meaningfulpaththerapy.com" target="_blank" rel="noopener">
+      Meaningful Path Therapy (Abdullah Al-Shoaibi)
+    </a>
+  </footer>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const el = id=>document.getElementById(id);
+  const q = s=>document.querySelector(s);
+  const qa = s=>Array.from(document.querySelectorAll(s));
+  const nowIso = ()=> new Date().toISOString();
+  const fmt = s=> new Date(s*1000).toISOString().substring(14,19);
+  const todayKey = ()=> new Date().toISOString().slice(0,10);
+
+  // ===== WebAudio for reliable sound =====
+  let audioCtx=null, soundOn=true;
+  function ensureAudio(){ if(!audioCtx){ const AC=window.AudioContext||window.webkitAudioContext; if(AC) audioCtx=new AC(); } if(audioCtx?.state==="suspended") audioCtx.resume(); }
+  function tone(f=880,d=0.12,gain=0.16){ if(!soundOn||!audioCtx) return; const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sine'; o.frequency.value=f; o.connect(g); g.connect(audioCtx.destination); const t=audioCtx.currentTime; g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(gain,t+0.01); g.gain.exponentialRampToValueAtTime(0.0001,t+d); o.start(t); o.stop(t+d+0.02); }
+  function ding(){ tone(880,0.08,0.14); setTimeout(()=>tone(660,0.10,0.12), 90); }
+  ['click','touchstart','keydown'].forEach(evt=>window.addEventListener(evt,()=>{ if(!audioCtx) ensureAudio(); }, {once:true, passive:true}));
+
+  // ===== Toast helper =====
+  function showToast(msg, type='info'){
+    const t=el('toast'); t.textContent=msg; t.className='toast show '+type;
+    setTimeout(()=>{ t.classList.remove('show'); }, 1600);
+  }
+
+  // ===== State =====
+  const state = {
+    currentStep:1,
+    inv:{jokers:0, stickers:0, coins:0},
+    rules:{abandonsTodayMap:{}, gentleDefault:false, nextBlockDefault:8, spinUpgrade:false},
+    session:{when:null, task:"", value:"", activationLatencySec:null, tinyStart:"", focusSeconds:0, aborted:false, effort:3, mood:3, stuck:false, reward:"None"},
+    focus:{seconds:0, duration:0, running:false, paused:false, timer:null},
+    planStartTs:null, ignitionStartTs:null,
+    spinning:false
+  };
+  let _sessions=[];
+
+  // ===== Persistence =====
+  function load(){
+    try{
+      Object.assign(state.inv, JSON.parse(localStorage.getItem('sc_inv')||'{}'));
+      const r = JSON.parse(localStorage.getItem('sc_rules')||'{}');
+      state.rules = Object.assign(state.rules, r||{});
+      if(typeof state.rules.spinUpgrade!=='boolean') state.rules.spinUpgrade=false;
+      _sessions = JSON.parse(localStorage.getItem('sc_sessions')||'[]');
+    }catch(e){}
+    updateInvUI(); updateKPIs();
+    if(state.rules.gentleDefault){ el('gentleToggle').checked = true; }
+  }
+  const saveInv = ()=>localStorage.setItem('sc_inv', JSON.stringify(state.inv));
+  const saveRules = ()=>localStorage.setItem('sc_rules', JSON.stringify(state.rules));
+
+  // ===== Navigation =====
+  function goStep(n){
+    state.currentStep=n;
+    qa('[data-step]').forEach(s=>s.classList.add('hidden'));
+    qa('[data-step-chip]').forEach(c=>c.classList.remove('active'));
+    q(`[data-step="${n}"]`).classList.remove('hidden');
+    q(`[data-step-chip="${n}"]`).classList.add('active');
+    if(n===6) renderSessions();
+  }
+
+  // ===== Plan =====
+  el('beginIgnition').addEventListener('click', ()=>{
+    ensureAudio(); soundOn = el('soundToggle').checked;
+    if(!el('task').value.trim()) el('task').value = "مهمة سريعة";
+    state.planStartTs = performance.now();
+    goStep(2); showIgnite('breath');
+  });
+  el('skipIgnition').addEventListener('click', ()=>{ state.planStartTs = performance.now(); goTinyStart(); });
+
+  // ===== Ignite tabs =====
+  function showIgnite(which){
+    qa('.ignite-tab').forEach(t=>t.classList.toggle('active', t.getAttribute('data-ig-tab')===which));
+    qa('.ignite-view').forEach(v=>v.classList.toggle('hidden', v.getAttribute('data-ig')!==which));
+  }
+  qa('.ignite-tab').forEach(t=>t.addEventListener('click', ()=>showIgnite(t.getAttribute('data-ig-tab'))));
+  el('nextSoft1').addEventListener('click', ()=>showIgnite('soft'));
+  el('nextEye1').addEventListener('click', ()=>showIgnite('eye'));
+  el('toTiny').addEventListener('click', ()=>goTinyStart());
+
+  // ===== Breath animation & timing (2 physiological sighs) — smooth RAF =====
+  let breathRAF = null, breathStartTS = 0, breathElapsedMs = 0, breathRunning = false;
+  const BREATH_PROFILE = {
+    normal: { inhale: 3.2, topup: 0.7, exhale: 5.6, pause: 0.8, settle: 2.0 },
+    gentle: { inhale: 2.4, topup: 0.6, exhale: 4.8, pause: 0.6, settle: 1.6 }
+  };
+  const easeInOutSine = t => -(Math.cos(Math.PI * t) - 1) / 2;
+  const clamp01 = x => Math.max(0, Math.min(1, x));
+  const lerp = (a, b, t) => a + (b - a) * t;
+
+  function breathPhaseAt(t, P) {
+    const one = [
+      { key: 'شهيق', d: P.inhale },
+      { key: 'شهيق قصير',  d: P.topup  },
+      { key: 'زفير طويل', d: P.exhale },
+      { key: 'سكون قصير',  d: P.pause  },
+    ];
+    const timeline = [...one, ...one, { key: 'تهدئة', d: P.settle }];
+    const total = timeline.reduce((s, p) => s + p.d, 0);
+    t = Math.min(t, total);
+
+    let acc = 0, phase = timeline[0];
+    for (let i = 0; i < timeline.length; i++) {
+      if (t <= acc + timeline[i].d) { phase = timeline[i]; break; }
+      acc += timeline[i].d;
+    }
+    const localT = clamp01((t - acc) / phase.d);
+
+    const base = 0.95, maxInhale = 1.16, topUpPeak = 1.20, minExhale = 0.88, settleTo = 0.96;
+
+    let scale = base;
+    switch (phase.key) {
+      case 'شهيق':
+        scale = lerp(base, maxInhale, easeInOutSine(localT)); break;
+      case 'شهيق قصير':
+        scale = lerp(maxInhale, topUpPeak, easeInOutSine(localT)); break;
+      case 'زفير طويل':
+        scale = lerp(topUpPeak, minExhale, easeInOutSine(localT)); break;
+      case 'سكون قصير':
+        scale = lerp(minExhale, base, easeInOutSine(localT)); break;
+      case 'تهدئة':
+        scale = lerp(base, settleTo, easeInOutSine(localT)); break;
+    }
+    return { scale, label: phase.key, total };
+  }
+
+  function startBreath(){
+    const P = (el('gentleToggle').checked || (state.rules?.gentleDefault)) ? BREATH_PROFILE.gentle : BREATH_PROFILE.normal;
+
+    el('breathProg').value = 0;
+    el('breathTimer').textContent = '00:00';
+    const circle = el('breathCircle');
+    const text = el('breathText');
+    text.textContent = 'شهيق';
+    state.ignitionStartTs = state.ignitionStartTs || performance.now();
+
+    const totalSecs = (P.inhale + P.topup + P.exhale + P.pause) * 2 + P.settle;
+    const totalMs = totalSecs * 1000;
+
+    breathRunning = true;
+    breathStartTS = performance.now();
+    breathElapsedMs = 0;
+
+    circle.classList.add('breathe-glow');
+
+    let lastPhase = 'شهيق';
+    cancelAnimationFrame(breathRAF);
+    function loop(now){
+      if(!breathRunning) return;
+      breathElapsedMs = now - breathStartTS;
+
+      const tSec = breathElapsedMs / 1000;
+      const { scale, label } = breathPhaseAt(tSec, P);
+
+      circle.style.transform = `scale(${scale.toFixed(3)})`;
+      const glow = Math.max(0, (scale - 0.95)) * 50;
+      circle.style.boxShadow = `inset 0 0 40px rgba(124,196,255,.15), 0 8px 24px rgba(124,196,255,${(glow/100).toFixed(2)})`;
+
+      if (label !== lastPhase){
+        if (label !== 'تهدئة') { ding(); }
+        lastPhase = label;
+      }
+      el('breathText').textContent = label;
+      el('breathTimer').textContent = new Date(Math.min(breathElapsedMs, totalMs)).toISOString().substring(14, 19);
+      el('breathProg').value = Math.round((breathElapsedMs / totalMs) * 100);
+
+      if (breathElapsedMs >= totalMs){
+        breathRunning = false;
+        circle.classList.remove('breathe-glow');
+        el('breathText').textContent = 'اكتمل التنفّس.';
+        ding();
+        return;
+      }
+      breathRAF = requestAnimationFrame(loop);
+    }
+    breathRAF = requestAnimationFrame(loop);
+  }
+  el('startBreath').addEventListener('click', ()=>{ ensureAudio(); startBreath(); });
+
+  // ===== Soft-eyes timing =====
+  let softInt=null, softElapsed=0, softTotal=20;
+  function softSetGentle(){ softTotal = el('gentleToggle').checked || state.rules.gentleDefault ? 12 : 20; }
+  function startSoft(){
+    softSetGentle(); softElapsed=0; el('softProg').value=0; el('softTimer').textContent='00:00';
+    clearInterval(softInt);
+    const txt = q('[data-ig="soft"] .breath-text');
+    const cues = [
+      {t:0, msg:'وسّع مجال الرؤية إلى الأطراف.'},
+      {t:6, msg:'ارخِ الفك، اخفض الكتفين.'},
+      {t:12, msg:'اجعل النظرة لينة بلا مجهود.'}
+    ];
+    softInt = setInterval(()=>{
+      softElapsed++; el('softTimer').textContent = fmt(softElapsed);
+      el('softProg').value = Math.round((softElapsed/softTotal)*100);
+      const step = cues.reduce((a,b)=> b.t<=softElapsed ? b : a, cues[0]); txt.textContent = step.msg;
+      if(softElapsed>=softTotal){ clearInterval(softInt); ding(); txt.textContent="تمّ إرخاء النظر."; }
+    }, 1000);
+  }
+  el('startSoft').addEventListener('click', ()=>{ ensureAudio(); startSoft(); });
+
+  // ===== Eye movement (pursuit or saccades) =====
+  let emRAF=null, emRunning=false, emStart=0, emElapsed=0, emTotal=15, emMode='pursuit';
+  function eyeSetGentle(){ emTotal = el('gentleToggle').checked || state.rules.gentleDefault ? 10 : 15; }
+  qa('input[name="emMode"]').forEach(r=>r.addEventListener('change', e=>{ emMode = e.target.value; }));
+  function startEye(){
+    eyeSetGentle(); emElapsed=0; el('eyeProg').value=0; el('eyeTimer').textContent='00:00';
+    const track = el('emTrack'), dot = el('emDot');
+    const speed = +el('emSpeed').value; // 1..10
+    const width = track.clientWidth - 20; const rightMin=10, rightMax = rightMin + width;
+    const midY = track.clientHeight/2 - 8;
+    emRunning=true; emStart=performance.now();
+    cancelAnimationFrame(emRAF);
+    function loop(t){
+      if(!emRunning) return;
+      emElapsed = Math.floor((t - emStart)/1000);
+      el('eyeTimer').textContent = fmt(emElapsed);
+      el('eyeProg').value = Math.round((emElapsed/emTotal)*100);
+      const ms = (t - emStart);
+      let x;
+      if(emMode==='pursuit'){
+        const period = (11 - speed) * 400;
+        const phase = (ms % period) / period;
+        const s = Math.sin(phase * Math.PI*2) * 0.5 + 0.5;
+        x = rightMin + s * (rightMax - rightMin);
+      }else{ // saccades
+        const stepMs = (11 - speed) * 90 + 110;
+        const idx = Math.floor(ms/stepMs) % 6;
+        const positions = [rightMin, rightMax, rightMin+(rightMax-rightMin)*0.35, rightMax, rightMin, rightMin+(rightMax-rightMin)*0.65];
+        x = positions[idx];
+      }
+      dot.style.right = x+'px'; dot.style.top = (midY + Math.sin(ms/800)*20) + 'px';
+      if(emElapsed>=emTotal){ emRunning=false; ding(); }
+      else emRAF = requestAnimationFrame(loop);
+    }
+    emRAF = requestAnimationFrame(loop);
+  }
+  el('startEye').addEventListener('click', ()=>{ ensureAudio(); startEye(); });
+
+  // ===== Tiny start =====
+  const gentleTiny = [
+    "افتح الملف/التطبيق فقط. توقّف هنا. لاحظ تنفّسك.",
+    "اكتب عنوانًا مؤقتًا فقط. احفظ وانتهِ.",
+    "اكتب نقطة واحدة فقط.",
+    "اضبط مؤقّت ٣ دقائق وتصفّح الصفحة بهدوء.",
+    "ضع المستند أمامك ثم اجلس. فقط."
+  ];
+  const tinyBase = [
+    "افتح ما تحتاجه للمهمة فقط — ولا شيء غيره.",
+    "اكتب العنوان أو أول جملة فقط.",
+    "اكتب ٣ نقاط تُفصّلها لاحقًا.",
+    "اضبط مؤقّت ٥ دقائق واكتب ما ستحتاجه من أدوات/مواد.",
+    "رتّب الأدوات على المكتب واجلس.",
+    "أرسل سطر متابعة واحدًا ليصبح الأمر حقيقيًا.",
+    "ارسم صندوق مخطط فى ٦٠ ثانية.",
+    "سمِّ عائقًا واحدًا وخطوة تالية سهلة جدًا."
+  ];
+  function goTinyStart(){
+    goStep(3);
+    const useGentle = el('gentleToggle').checked || state.rules.gentleDefault || state.rules.nextBlockDefault===5;
+    const pool = useGentle ? gentleTiny : tinyBase;
+    const s = pool[Math.floor(Math.random()*pool.length)];
+    el('tinySuggestion').textContent = s;
+    state.session.tinyStart = s;
+    el('useJoker').disabled = state.inv.jokers<=0;
+  }
+  el('anotherTiny').addEventListener('click', goTinyStart);
+  el('didTiny').addEventListener('click', ()=>{ ding(); });
+
+  // Focus block
+  function startFocus(mins){
+    state.session.when = nowIso();
+    state.focus.duration = mins*60; state.focus.seconds=0; state.focus.running=true; state.focus.paused=false;
+    const ref = state.ignitionStartTs || state.planStartTs || performance.now();
+    state.session.activationLatencySec = Math.max(0, Math.round((performance.now()-ref)/1000));
+    el('latencyOut').textContent = `${state.session.activationLatencySec}s`;
+    el('focusTimer').textContent = fmt(state.focus.duration); el('focusProgress').value = 0;
+    goStep(4);
+    clearInterval(state.focus.timer);
+    state.focus.timer = setInterval(()=>{
+      if(!state.focus.running || state.focus.paused) return;
+      state.focus.seconds++;
+      const remain = Math.max(0, state.focus.duration - state.focus.seconds);
+      el('focusTimer').textContent = fmt(remain);
+      el('focusProgress').value = Math.round((state.focus.seconds/state.focus.duration)*100);
+      if(remain<=0){ clearInterval(state.focus.timer); completeFocus(); }
+    }, 1000);
+  }
+  qa('[data-mins]').forEach(b=>b.addEventListener('click', ()=>startFocus(+b.getAttribute('data-mins'))));
+  function completeFocus(){ state.session.focusSeconds = state.focus.duration; state.session.aborted=false; ding(); goReward(); }
+  function finishEarly(){ state.session.focusSeconds = Math.max(1, state.focus.seconds); state.session.aborted=false; clearInterval(state.focus.timer); ding(); goReward(); }
+  function abortFocus(){
+    state.session.focusSeconds = Math.max(0, state.focus.seconds); state.session.aborted=true; clearInterval(state.focus.timer);
+    const tk=todayKey(); const m=state.rules.abandonsTodayMap||{}; m[tk]=(m[tk]||0)+1; state.rules.abandonsTodayMap=m;
+    state.rules.nextBlockDefault=5; saveRules(); updateKPIs(); goReward(true);
+  }
+  el('finishEarly').addEventListener('click', finishEarly);
+  el('pauseFocus').addEventListener('click', e=>{ state.focus.paused=!state.focus.paused; e.target.textContent = state.focus.paused ? "استئناف" : "إيقاف مؤقّت"; });
+  el('abortFocus').addEventListener('click', abortFocus);
+
+  // ===== Reward wheel (ALWAYS rewards) =====
+  const slices = [
+    {label:"⭐ ملصق", key:"sticker"},
+    {label:"🪙 عملة", key:"coin"},
+    {label:"⭐ ملصق", key:"sticker"},
+    {label:"🎟️ جوكر", key:"joker"},
+    {label:"⭐ ملصق", key:"sticker"},
+    {label:"🪙 عملة", key:"coin"},
+    {label:"⭐ ملصق", key:"sticker"},
+    {label:"🪙 عملة", key:"coin"}
+  ];
+  const rewards = [
+    {label:"⭐ ملصق", gain:{stickers:1}, weight:44, key:"sticker"},
+    {label:"🪙 عملة",  gain:{coins:1},    weight:32, key:"coin"},
+    {label:"🎟️ جوكر", gain:{jokers:1},   weight:24, key:"joker"}
+  ];
+  function buildWheel(){
+    const w=el('wheel'); w.innerHTML="";
+    for(let i=0;i<8;i++){
+      const d=document.createElement('div'); d.className='label'; d.textContent=slices[i].label.split(' ')[0];
+      const ang=i*45+22.5; d.style.transform=`rotate(${ang}deg) translate(85px) rotate(90deg)`; w.appendChild(d);
+    }
+    w.style.transition='none'; w.style.transform='rotate(0deg)'; void w.offsetWidth;
+    w.style.transition='transform 3.2s cubic-bezier(.17,.67,.19,1.02)';
+    el('wheelResult').textContent="جاهز للدوران";
+  }
+  function weightedPick(){
+    const total = rewards.reduce((a,b)=>a+b.weight,0);
+    let r = Math.random()*total;
+    for(const o of rewards){ r-=o.weight; if(r<=0) return o; }
+    return rewards[0];
+  }
+  function sliceIndexForKey(key){
+    const idxs=[]; slices.forEach((s,i)=>{ if(s.key===key) idxs.push(i); });
+    return idxs[Math.floor(Math.random()*idxs.length)];
+  }
+  function goReward(fromAbort=false){
+    goStep(5); buildWheel();
+    el('wheelResult').textContent = fromAbort ? "كانت محاولة صعبة — حان وقت مكافأة رحيمة." : "أحسنت — هل ترغب بتدوير العجلة؟";
+    el('invJokers2').textContent=state.inv.jokers; el('invStickers2').textContent=state.inv.stickers; el('invCoins2').textContent=state.inv.coins;
+  }
+
+  // Joker use (UPGRADES next spin: Sticker→Coin, Coin→Joker)
+  el('useJoker').addEventListener('click', ()=>{
+    if(state.inv.jokers<=0){
+      showToast("لا يوجد جوكر متاح.", 'warn');
+      return;
+    }
+    state.inv.jokers--; saveInv(); updateInvUI();
+    state.rules.spinUpgrade = true; saveRules();
+    showToast("تم استخدام الجوكر: سيتم ترقية الدوران القادم 🎟️", 'ok');
+    el('useJoker').disabled = state.inv.jokers<=0;
+    ding();
+  });
+
+  // Spin
+  el('spinWheel').addEventListener('click', ()=>{
+    if(state.spinning) return; ensureAudio(); state.spinning=true; el('spinWheel').classList.add('spinning');
+    let outcome = weightedPick();
+
+    // Apply Joker upgrade if set
+    if(state.rules.spinUpgrade){
+      if(outcome.key==='sticker'){ outcome = {label:"🪙 عملة", gain:{coins:1}, key:"coin"}; }
+      else if(outcome.key==='coin'){ outcome = {label:"🎟️ جوكر", gain:{jokers:1}, key:"joker"}; }
+    }
+
+    const idx = sliceIndexForKey(outcome.key);
+    const sliceDeg = 360/8, centre = idx*sliceDeg + sliceDeg/2;
+    const turns = 6 + Math.floor(Math.random()*3);
+    const target = 360*turns + (360 - centre) + (Math.random()*6-3);
+    const w=el('wheel');
+
+    w.ontransitionend = ()=>{
+      w.ontransitionend=null;
+      el('wheelResult').textContent = `النتيجة: ${outcome.label}`;
+      Object.entries(outcome.gain).forEach(([k,v])=> state.inv[k]+=v);
+      saveInv(); updateInvUI(); ding();
+      if(state.rules.spinUpgrade){ state.rules.spinUpgrade=false; saveRules(); showToast("تم تطبيق الترقية ✔︎", 'ok'); }
+      state.spinning=false; el('spinWheel').classList.remove('spinning');
+    };
+    requestAnimationFrame(()=>{ w.style.transform=`rotate(${target}deg)`; });
+  });
+  el('skipWheel').addEventListener('click', ()=>{ el('wheelResult').textContent="تجاوزت الدوران."; });
+
+  // ===== Reflection & Stats =====
+  function saveSession(){
+    state.session.task = el('task').value.trim() || "مهمة سريعة";
+    const cv = el('customValue').value.trim();
+    state.session.value = cv || el('value').value;
+    state.session.effort = +el('effort').value;
+    state.session.mood = +el('mood').value;
+    state.session.stuck = el('stuck').checked;
+    _sessions.unshift({...state.session}); localStorage.setItem('sc_sessions', JSON.stringify(_sessions));
+    updateKPIs(); resetForNew(); goStep(6);
+  }
+  function renderSessions(){
+    const list=el('sessionList'); list.innerHTML="";
+    if(!_sessions.length){ const d=document.createElement('div'); d.className='muted'; d.textContent="لا توجد جلسات بعد."; list.appendChild(d); return; }
+    _sessions.slice(0,10).forEach(s=>{
+      const row=document.createElement('div'); row.className='rowx';
+      const left=document.createElement('div'); const dt=new Date(s.when||Date.now());
+      left.innerHTML=`<div><b>${s.task||'مهمة دون عنوان'}</b></div><div class="tiny muted">${dt.toLocaleString()} · ${s.value||'-'} · خطوة: ${s.tinyStart||'-'}</div>`;
+      const right=document.createElement('div'); right.style.textAlign='left';
+      right.innerHTML=`<div class="badge">${s.activationLatencySec||0}s زمن التهيئة</div>
+                       <div class="tiny muted">${Math.round((s.focusSeconds||0)/60)} د · ${s.aborted?'<span class="badge" style="border-color:#5a2e39;color:#ffd6dc">أُلغيَت</span>':'<span class="badge" style="border-color:#2e5a47;color:#dcffe4">اكتملت</span>'}</div>`;
+      row.append(left,right); list.appendChild(row);
+    });
+  }
+  function updateKPIs(){
+    let lat=0,n=0, focus7=0; const weekAgo=Date.now()-7*864e5;
+    for(const s of _sessions){ if(typeof s.activationLatencySec==='number'){ lat+=s.activationLatencySec; n++; } if(new Date(s.when).getTime()>=weekAgo){ focus7+=(s.focusSeconds||0); } }
+    el('avgLatency').textContent = n? `${Math.round(lat/n)}s` : '—';
+    el('focus7').textContent = `${Math.round(focus7/60)} د`;
+    const aband = (state.rules.abandonsTodayMap?.[todayKey()]||0); el('abandonsToday').textContent = aband;
+  }
+  function updateInvUI(){
+    el('invJokers').textContent=state.inv.jokers; el('invStickers').textContent=state.inv.stickers; el('invCoins').textContent=state.inv.coins;
+    el('invJokers2')&&(el('invJokers2').textContent=state.inv.jokers);
+    el('invStickers2')&&(el('invStickers2').textContent=state.inv.stickers);
+    el('invCoins2')&&(el('invCoins2').textContent=state.inv.coins);
+  }
+  function resetForNew(){
+    state.planStartTs=null; state.ignitionStartTs=null; state.focus={seconds:0,duration:0,running:false,paused:false,timer:null};
+    state.session={when:null, task:"", value:"", activationLatencySec:null, tinyStart:"", focusSeconds:0, aborted:false, effort:3, mood:3, stuck:false, reward:"None"};
+  }
+
+  // Reflection buttons
+  el('saveSession').addEventListener('click', saveSession);
+  el('anotherBlock').addEventListener('click', ()=>goTinyStart());
+
+  // Export / Clear / New
+  el('exportData').addEventListener('click', ()=>{
+    const blob = new Blob([JSON.stringify({sessions:_sessions, inventory:state.inv, rules:state.rules}, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`switchcraft_${todayKey()}.json`; a.click(); URL.revokeObjectURL(url);
+  });
+  el('clearData').addEventListener('click', ()=>{
+    if(!confirm("حذف جميع البيانات المحلّية (الجلسات والمخزون والقواعد)؟")) return;
+    localStorage.removeItem('sc_sessions'); localStorage.removeItem('sc_inv'); localStorage.removeItem('sc_rules');
+    _sessions=[]; state.inv={jokers:0,stickers:0,coins:0}; state.rules={abandonsTodayMap:{}, gentleDefault:false, nextBlockDefault:8, spinUpgrade:false};
+    updateInvUI(); updateKPIs(); renderSessions();
+  });
+  el('newSession').addEventListener('click', ()=>goStep(1));
+
+  // Header toggles
+  el('soundToggle').addEventListener('change', e=>{ soundOn=e.target.checked; if(soundOn) ensureAudio(); });
+  el('testSound').addEventListener('click', ()=>{ ensureAudio(); ding(); });
+  el('gentleToggle').addEventListener('change', e=>{ state.rules.gentleDefault = e.target.checked; saveRules(); });
+
+  // Keyboard helpers
+  window.addEventListener('keydown', e=>{
+    if(state.currentStep===2 && e.key==='Enter'){ ensureAudio(); startBreath(); }
+    if(state.currentStep===3 && e.key==='Enter'){ startFocus(state.rules.nextBlockDefault||8); }
+    if(state.currentStep===4 && e.key==='Escape'){ abortFocus(); }
+  });
+
+  // Init
+  load(); goStep(1);
+})();
+</script>
+</body>
+</html>
